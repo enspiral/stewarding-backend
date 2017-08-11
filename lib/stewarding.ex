@@ -2,6 +2,7 @@ defmodule Stewarding do
   @moduledoc """
   Documentation for Stewarding.
   """
+  use Application
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
@@ -9,6 +10,8 @@ defmodule Stewarding do
     children = [
       supervisor(Stewarding.Repo, []),
     ]
+    opts = [ strategy: :one_for_one, name: Stewarding.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 
   def main(args) do
