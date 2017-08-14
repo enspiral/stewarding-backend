@@ -19,14 +19,14 @@ defmodule Stewarding do
   end
 
   def add_person(key) do
-    Stewarding.Repo.insert %Stewarding.Person{key: key}
+    Stewarding.Person.add_person(key)
   end
 
   def get_steward(key) do
-    {:ok, "craig@enspiral.com"}
+    Stewarding.Person.get_steward(key)
   end
 
   def get_stewardee(key) do
-    {:ok, nil}
+    Stewarding.Person.get_stewardee(key)
   end
 end
