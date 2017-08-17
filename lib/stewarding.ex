@@ -3,6 +3,7 @@ defmodule Stewarding do
   Documentation for Stewarding.
   """
   use Application
+  alias Stewarding.Person
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
@@ -19,14 +20,14 @@ defmodule Stewarding do
   end
 
   def add_person(key) do
-    Stewarding.Person.add_person(key)
+    Person.add_person(key)
   end
 
   def get_steward(key) do
-    Stewarding.Person.get_steward(key)
+    Person.get_steward(key)
   end
 
   def get_stewardee(key) do
-    Stewarding.Person.get_stewardee(key)
+    Person.get_stewardee(key)
   end
 end

@@ -5,6 +5,8 @@ end
 defmodule Stewarding.Person do
   use Ecto.Schema
   import Ecto.Query
+  alias Stewarding.Person
+  alias Stewarding.Repo
 
   schema "people" do
     field :key, :string
@@ -12,31 +14,33 @@ defmodule Stewarding.Person do
   end
 
   def last_person do
-    Stewarding.Person
-    |> Ecto.Query.last
-    |> Stewarding.Repo.one
+    Person
+    |> last
+    |> Repo.one
   end
 
   def fetch_person(key) do
-    Stewarding.Person
-    |> Stewarding.Repo.get_by(key: key)
+    Person
+    |> Repo.get_by(key: key)
   end
 
   def add_person(key) do
-    case Stewarding.Person.fetch_person(key) do
-      nil -> Stewarding.Repo.insert %Stewarding.Person{key: key}
+    case Person.fetch_person(key) do
+      nil -> Repo.insert %Person{key: key}
       _ -> {:error, key <> " already exists"}
     end
   end
 
   def get_steward(key) do
-    steward = Stewarding.Person |> Stewarding.Repo.get_by(stewardee: key)
-    fetch_person(key)
+    steward = Person |> Repo.get_by(stewardee: key)
+    key
+    |> fetch_person
     |> validate_found(fn _ -> steward end)
   end
 
   def get_stewardee(key) do
-    fetch_person(key)
+    key
+    |> fetch_person
     |> validate_found(&(&1.stewardee))
   end
 
