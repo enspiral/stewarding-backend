@@ -30,11 +30,11 @@ defmodule StewardingTest do
     assert Stewarding.get_stewardee("craig@enspiral.com") == {:ok, nil}
   end
 
-  # test "second person is stewarded by first" do
-  #   Stewarding.add_person "craig@enspiral.com"
-  #   Stewarding.add_person "nicolas@enspiral.com"
+  test "second person is stewarded by first" do
+    craig = Stewarding.add_person "craig@enspiral.com"
+    Stewarding.add_person "nicolas@enspiral.com"
 
-  #   assert Stewarding.get_steward("nicolas@enspiral.com") == {:ok, "craig@enspiral.com"}
-  #   assert Stewarding.get_stewardee("nicolas@enspiral.com") == {:ok, nil}
-  # end
+    assert Stewarding.get_steward("nicolas@enspiral.com") == craig
+    assert Stewarding.get_stewardee("nicolas@enspiral.com") == {:ok, nil}
+  end
 end

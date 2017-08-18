@@ -20,7 +20,15 @@ defmodule Stewarding do
   end
 
   def add_person(key) do
-    Person.add_person(%{:key => key})
+    case Person.add_person(%{:key => key}) do
+      result = {:ok, person} ->
+        relationship = MatchMaker.match(person)
+        case relationship do
+          nil -> result
+          rel -> Stewarding.Repo.insert(rel)
+        end
+      result -> result
+    end
   end
 
   def get_steward(key) do
