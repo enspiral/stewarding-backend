@@ -20,7 +20,7 @@ defmodule Stewarding do
   end
 
   def add_person(key) do
-    Person.add_person(key)
+    Person.add_person(%{:key => key})
   end
 
   def get_steward(key) do

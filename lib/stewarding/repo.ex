@@ -5,12 +5,21 @@ end
 defmodule Stewarding.Person do
   use Ecto.Schema
   import Ecto.Query
+  import Ecto.Changeset
   alias Stewarding.Person
   alias Stewarding.Repo
 
   schema "people" do
     field :key, :string
     field :stewardee, :string
+  end
+
+
+  def changeset(record, params \\ :empty) do
+    record
+    |> cast(params, [:key])
+    |> validate_required([:key])
+    |> unique_constraint(:key)
   end
 
   def last_person do
@@ -24,11 +33,10 @@ defmodule Stewarding.Person do
     |> Repo.get_by(key: key)
   end
 
-  def add_person(key) do
-    case Person.fetch_person(key) do
-      nil -> Repo.insert %Person{key: key}
-      _ -> {:error, key <> " already exists"}
-    end
+  def add_person(attrs) do
+      %Person{}
+      |> changeset(attrs)
+      |> Repo.insert()
   end
 
   def get_steward(key) do
