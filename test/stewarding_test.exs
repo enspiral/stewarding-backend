@@ -6,6 +6,18 @@ defmodule StewardingTest do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Stewarding.Repo)
   end
 
+  test "adding a person requires a key" do
+    email = "craig@enspiral.com"
+    assert {:error, _} = Stewarding.add_person("")
+
+  end
+
+  test "adding a person with duplicate key reports an error" do
+    email = "craig@enspiral.com"
+    assert {:ok, _} = Stewarding.add_person(email)
+    assert {:error, _} = Stewarding.add_person(email)
+  end
+
   test "getting steward on person who doesn't exist returns error" do
     assert Stewarding.get_steward("craig@enspiral.com") == {:error, "person not found"}
     assert Stewarding.get_stewardee("craig@enspiral.com") == {:error, "person not found"}
