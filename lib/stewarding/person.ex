@@ -36,31 +36,25 @@ defmodule Stewarding.Person do
       |> Repo.insert()
   end
 
-  def get_steward(key) do
-    key
-    |> fetch_person
-    |> case do
-      result = {:error, _} -> result
-      {:ok, person} -> person
-        |> Relationship.fetch_targetting
-        |> Relationship.fetch_source
-        |> (&({:ok, &1})).()
-    end
+  def get_steward(person) do
+    person
+    |> Relationship.fetch_targetting
+    |> Relationship.fetch_source
+    |> in_ok_tuple
   end
 
-  def get_stewardee(key) do
-    key
-    |> fetch_person
-    |> case do
-      result = {:error, _} -> result
-      {:ok, person} -> person
-        |> Relationship.fetch_sourcing
-        |> Relationship.fetch_target
-        |> (&({:ok, &1})).()
-    end
+  def get_stewardee(person) do
+    person
+    |> Relationship.fetch_sourcing
+    |> Relationship.fetch_target
+    |> in_ok_tuple
   end
 
 # ---
+
+  defp in_ok_tuple(value) do
+    {:ok, value}
+  end
 
   defp validate_found(person) do
     case person do

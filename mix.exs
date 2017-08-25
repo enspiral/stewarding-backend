@@ -32,7 +32,8 @@ defmodule Stewarding.Mixfile do
   defp deps do
     [
       {:postgrex, ">= 0.0.0"},
-      {:ecto, "~> 2.1"}
+      {:ecto, "~> 2.1"},
+      {:plumber_girl, "~> 0.9.5"}
     ]
   end
 end

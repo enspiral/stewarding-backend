@@ -4,6 +4,7 @@ defmodule Stewarding do
   """
   use Application
   alias Stewarding.Person
+  use PlumberGirl
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
@@ -32,10 +33,14 @@ defmodule Stewarding do
   end
 
   def get_steward(key) do
-    Person.get_steward(key)
+    key
+    |> Person.fetch_person
+    >>> Person.get_steward
   end
 
   def get_stewardee(key) do
-    Person.get_stewardee(key)
+    key
+    |> Person.fetch_person
+    >>> Person.get_stewardee
   end
 end
