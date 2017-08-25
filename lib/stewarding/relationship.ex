@@ -16,9 +16,9 @@ defmodule Relationship do
   end
 
   def fetch_source(nil), do: nil
-  def fetch_source(%Relationship{source_id: sid}) do
+  def fetch_source(%Relationship{source_id: person_id}) do
     Stewarding.Person
-    |> Repo.get_by(id: sid)
+    |> Repo.get_by(id: person_id)
   end
 
   def fetch_sourcing(person) do
@@ -28,8 +28,8 @@ defmodule Relationship do
   end
 
   def fetch_target(nil), do: nil
-  def fetch_target(%Relationship{target_id: sid}) do
+  def fetch_target(%Relationship{target_id: person_id}) do
     Stewarding.Person
-    |> Repo.get_by(id: sid)
+    |> Repo.get_by(id: person_id)
   end
 end

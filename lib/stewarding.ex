@@ -21,15 +21,9 @@ defmodule Stewarding do
   end
 
   def add_person(key) do
-    case Person.add_person(%{:key => key}) do
-      result = {:ok, person} ->
-        relationship = MatchMaker.match(person)
-        case relationship do
-          nil -> result
-          rel -> Stewarding.Repo.insert(rel)
-        end
-      result -> result
-    end
+    %{:key => key}
+    |> Person.add_person
+    >>> setup_relationships
   end
 
   def get_steward(key) do
@@ -42,5 +36,21 @@ defmodule Stewarding do
     key
     |> Person.fetch_person
     >>> Person.get_stewardee
+  end
+
+  # ----
+
+  defp setup_relationships(person) do
+    case MatchMaker.match(person) do
+      nil -> {:ok, person}
+      relationship -> store_relationship(relationship, person)
+    end
+  end
+
+  defp store_relationship(relationship, person) do
+    case Stewarding.Repo.insert(relationship) do
+      result = {:error, _} -> result
+      {:ok, _} -> {:ok, person}
+    end
   end
 end
